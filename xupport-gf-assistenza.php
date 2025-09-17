@@ -4,7 +4,7 @@
  * Plugin Name: Xupport GF Assistenza
  * Plugin URI:  https://www.xupport.it
  * Description: Funzioni Gravity Forms + integrazione API Xupport (wizard assistenza/prima accensione).
- * Version:     0.3.2
+ * Version:     0.3.4
  * Author:      Giacomo Lanzi
  * Author URI:  https://planbproject.it
  * License:     GPLv2 or later
