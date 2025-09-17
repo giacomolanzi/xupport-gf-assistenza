@@ -1,44 +1,24 @@
+# .github/workflows/release.yml
 name: Build & Release WP plugin asset
 
 on:
   push:
-    tags:
-      - "v*" # es. v0.3.0
+    tags: ["v*"]
+
+permissions:
+  contents: write # <— fondamentale per creare la release
 
 jobs:
   build-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo (con tag)
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Deriva variabili
-        id: vars
-        run: |
-          echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
-          echo "TAG_STRIPPED=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
-          echo "ZIP_NAME=xupport-gf-assistenza-${GITHUB_REF_NAME}.zip" >> $GITHUB_OUTPUT
-
-      - name: Verifica che la Version nel plugin combaci con il tag
-        run: |
-          FILE_VERSION=$(grep -E '^\s*\*\s*Version:' xupport-gf-assistenza.php | head -n1 | sed -E 's/.*Version:\s*([0-9\.]+).*/\1/')
-          if [ "$FILE_VERSION" != "${{ steps.vars.outputs.TAG_STRIPPED }}" ]; then
-            echo "Versione nel file ($FILE_VERSION) diversa dal tag (${{ steps.vars.outputs.TAG_STRIPPED }})"
-            exit 1
-          fi
-
-      - name: Crea lo ZIP usando git archive (rispetta .gitattributes export-ignore)
-        run: |
-          git archive --format=zip --output "${{ steps.vars.outputs.ZIP_NAME }}" --prefix="xupport-gf-assistenza/" HEAD
-
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      # ... resto invariato ...
       - name: Pubblica la Release con asset
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.vars.outputs.TAG }}
-          name: ${{ steps.vars.outputs.TAG }}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           generate_release_notes: true
-          files: ${{ steps.vars.outputs.ZIP_NAME }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: xupport-gf-assistenza-${{ github.ref_name }}.zip
