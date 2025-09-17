@@ -11,7 +11,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: xupport-gf-assistenza
  *
- * GitHub Plugin URI: xupportit/xupport-gf-assistenza
+ * GitHub Plugin URI: giacomolanzi/xupport-gf-assistenza
  * Primary Branch: main
  * Release Asset: true
  */
